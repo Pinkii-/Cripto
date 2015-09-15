@@ -26,9 +26,7 @@ def cesar():
 	global data
 	global dataFreq
 	global frequency
-	solucion = "n"
 	for ite in sorted(dataFreq, key=dataFreq.get, reverse=True):
-		
 		clave = ord(ite) - ord(frequency[0])
 		for cc in data:
 			c = ord(cc)
@@ -38,6 +36,24 @@ def cesar():
 				print(cc,end="")
 		if input("Solucion? [y/n]") == "y":
 			print ("--------- La clave es: " + chr(clave+65))
+			break
+
+def escitalo():
+	import string, re
+	global data
+	#data = re.sub('[\W_]', '', data)
+	clave = 0
+	while True:
+		clave += 1
+		lenght = len(data)
+		for c in range(0,int(lenght/clave)):
+			for i in range(0, clave):
+				print(data[c+i*int(lenght/clave)],end="")
+		
+
+
+		if input(" Solucion? [y/n] (clave " + str(clave) + ") ") == "y":
+			print ("--------- La clave es: " + str(clave))
 			break
 
 def main():
@@ -54,6 +70,8 @@ def main():
 
 	if encrypt == "cesar":
 		cesar()
+	elif encrypt == "escitalo":
+		escitalo()
 
 if __name__ == '__main__':
 	main()
