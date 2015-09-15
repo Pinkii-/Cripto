@@ -39,16 +39,34 @@ def cesar():
 			break
 
 def escitalo():
-	import string, re
+	import re, math
 	global data
 	#data = re.sub('[\W_]', '', data)
 	clave = 0
 	while True:
 		clave += 1
 		lenght = len(data)
-		for c in range(0,int(lenght/clave)):
+		count = 100
+		for c in range(0,math.ceil(lenght/clave)):
 			for i in range(0, clave):
 				print(data[c+i*int(lenght/clave)],end="")
+				count -= 1
+				if count < 0:
+					break
+			if count < 0:
+					break
+
+
+		print("---")
+		count = 100
+		for c in range(0,clave):
+			for i in range(0, math.ceil(lenght/clave)):
+				print(data[i*clave+clave],end="")
+				count -= 1
+				if count < 0:
+					break
+			if count < 0:
+					break
 		
 
 
@@ -64,7 +82,7 @@ def main():
 
 	filepath = "./*." + encrypt.title();
 	global data
-	data = open(glob.glob(filepath)[0],'r').read().upper()
+	data = open(glob.glob(filepath)[0],'r').read()#.upper()
 
 	getFreq()
 
