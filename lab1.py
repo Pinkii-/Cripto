@@ -25,9 +25,20 @@ def getFreq():
 def cesar():
 	global data
 	global dataFreq
+	global frequency
 	solucion = "n"
-	#while not solucion == "y" or not solucion == "yes":
-	#	pass
+	for ite in sorted(dataFreq, key=dataFreq.get, reverse=True):
+		
+		clave = ord(ite) - ord(frequency[0])
+		for cc in data:
+			c = ord(cc)
+			if c >= 65 and c <= 90:
+				print( chr((c+clave-65)%26+65),end="")
+			else:
+				print(cc,end="")
+		if input("Solucion? [y/n]") == "y":
+			print ("--------- La clave es: " + chr(clave+65))
+			break
 
 def main():
 	encrypt = "";
