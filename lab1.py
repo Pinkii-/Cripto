@@ -20,6 +20,7 @@ def getFreq():
 
 	for c in sorted(dataFreq, key=dataFreq.get, reverse=True):
 		print (c, dataFreq[c])
+	print ("")
 
 
 def cesar():
@@ -37,6 +38,16 @@ def cesar():
 		if input("Solucion? [y/n]") == "y":
 			print ("--------- La clave es: " + chr(clave+65))
 			break
+
+def getCesar(data):
+	global frequency
+	freq = {}
+	for c in alphabet:
+		freq[c] = data.count(c)
+	for c in sorted(freq, key=freq.get, reverse=True):
+		clave = c
+		break
+	return ord(clave) - ord(frequency[0])
 
 def escitalo():
 	import math
@@ -82,14 +93,17 @@ def vigenere():
 	global frequency
 	global dataFreq
 
+	originalData = data
 	data = re.sub('[\W_]', '', data)
 
 	biagram = {}
 
 	pos = -1
-	for c1,c2,c3,c4,c5,c6,c7,c8,c9 in zip(data,data[1::],data[2::],data[3::], data[4::], data[5::],data[6::], data[7::],data[8::]):
+	#for c1,c2,c3,c4,c5,c6,c7,c8,c9 in zip(data,data[1::],data[2::],data[3::], data[4::], data[5::],data[6::], data[7::],data[8::]):
+	for c1,c2,c3,c4,c5,c6,c7 in zip(data,data[1::],data[2::],data[3::], data[4::], data[5::],data[6::]):
 		pos += 1
-		bi = c1+c2+c3+c4+c5+c6+c7+c8+c9
+		#bi = c1+c2+c3+c4+c5+c6+c7+c8+c9
+		bi = c1+c2+c3+c4+c5+c6+c7
 		if not bi in biagram:
 			biagram[bi] = [pos]
 		else:
@@ -106,8 +120,55 @@ def vigenere():
 			else:
 				gcds[g] = 1
 
+	gcd = next(iter (gcds.keys()))
 	for c in sorted(gcds, key=gcds.get, reverse=True):
 		print(c,gcds[c])
+		gcd = fractions.gcd(gcd,c)
+
+	print("El gdc es " + str(gcd))
+
+	while True:
+		if not input("Te gusta la longitud de clave " + str(gcd) + "? [y/n] ") == "y":
+			longitud = int(input("Introduce la longitud de la clave a probar "))
+		else:
+			longitud = gcd
+		print ("Vamos a probar con claves de longitud " + str(longitud))
+
+		datas = [""]*longitud
+		i = 0;
+		for c in originalData:
+			if c >= 'A' and c <= 'Z':
+				datas[i] += c
+				i = (i + 1)%longitud
+		
+		clavesCesar = [int]*longitud
+		for n in range(0, longitud):
+			clavesCesar[n] = getCesar(datas[n])
+
+		clave = ""
+		for n in clavesCesar:
+			clave += chr(n+65)
+			print (chr(n+65),end="")
+		print("")
+
+		i = 0
+		j = 0
+		for c in originalData:
+			if c >= 'A' and c <= 'Z':
+				print (chr((ord(datas[i][j])-clavesCesar[i]-65)%26+65),end="")
+				i += 1
+				if i >= longitud:
+					i = 0
+					j += 1
+			else:
+				print(c,end="")
+
+		if input("Esta bien descifrado? [y/n] ") == "y":
+			print("la clave es: " + clave)
+			break
+
+
+
 
 
 
