@@ -39,9 +39,8 @@ def cesar():
 			break
 
 def escitalo():
-	import re, math
+	import math
 	global data
-	#data = re.sub('[\W_]', '', data)
 	clave = 0
 	while True:
 		clave += 1
@@ -70,9 +69,49 @@ def escitalo():
 		
 
 
-		if input(" Solucion? [y/n] (clave " + str(clave) + ") ") == "y":
+		if input("--- Solucion? [y/n] (clave " + str(clave) + ") ") == "y":
 			print ("--------- La clave es: " + str(clave))
 			break
+
+
+def vigenere():
+	import re
+	import fractions
+
+	global data
+	global frequency
+	global dataFreq
+
+	data = re.sub('[\W_]', '', data)
+
+	biagram = {}
+
+	pos = -1
+	for c1,c2,c3,c4,c5,c6,c7,c8,c9 in zip(data,data[1::],data[2::],data[3::], data[4::], data[5::],data[6::], data[7::],data[8::]):
+		pos += 1
+		bi = c1+c2+c3+c4+c5+c6+c7+c8+c9
+		if not bi in biagram:
+			biagram[bi] = [pos]
+		else:
+			biagram[bi].append(pos)
+
+	gcds = {}
+	for c in sorted(biagram, key=lambda k: len(biagram[k]), reverse=True):
+		if len(c) < 3:
+			break
+		for ap1, ap2, ap3 in zip(biagram[c],biagram[c][1::],biagram[c][2::]):
+			g = fractions.gcd(ap2-ap1,ap3-ap2)
+			if g in gcds:
+				gcds[g] += 1
+			else:
+				gcds[g] = 1
+
+	for c in sorted(gcds, key=gcds.get, reverse=True):
+		print(c,gcds[c])
+
+
+
+
 
 def main():
 	encrypt = "";
@@ -82,14 +121,17 @@ def main():
 
 	filepath = "./*." + encrypt.title();
 	global data
-	data = open(glob.glob(filepath)[0],'r').read()#.upper()
+	data = open(glob.glob(filepath)[0],'r').read().upper()
 
 	getFreq()
 
 	if encrypt == "cesar":
 		cesar()
 	elif encrypt == "escitalo":
+		data = open(glob.glob(filepath)[0],'r').read()
 		escitalo()
+	elif encrypt == "vigenere":
+		vigenere()
 
 if __name__ == '__main__':
 	main()
