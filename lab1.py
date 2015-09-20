@@ -7,6 +7,16 @@ frequency = ["E","T","A","O","I","N"]
 dataFreq = {
 }
 
+solucion = ""
+
+clave = 0
+claveStr = ""
+
+def printToFile(data,key,extension):
+	name = "GonzaloDiezGarrido"
+	filename = name + '_' + key + '.' + extension
+	f = open("soluciones/"+filename,'w+')
+	f.write(data)
 
 def printData(data):
 	for c in data:
@@ -27,16 +37,23 @@ def cesar():
 	global data
 	global dataFreq
 	global frequency
+	global solucion
+	global clave
 	for ite in sorted(dataFreq, key=dataFreq.get, reverse=True):
 		clave = ord(ite) - ord(frequency[0])
 		for cc in data:
 			c = ord(cc)
 			if c >= 65 and c <= 90:
-				print( chr((c+clave-65)%26+65),end="")
+				ch =chr((c+clave-65)%26+65)
+				solucion+=ch
+				print( ch,end="")
 			else:
+				solucion+=cc
 				print(cc,end="")
 		if input("Solucion? [y/n]") == "y":
+			claveStr = chr(clave+65)
 			print ("--------- La clave es: " + chr(clave+65))
+			printToFile(solucion,claveStr,"Cesar")
 			break
 
 def getCesar(data):
@@ -52,6 +69,8 @@ def getCesar(data):
 def escitalo():
 	import math
 	global data
+	global clave
+	global solucion
 	clave = 0
 	while True:
 		clave += 1
@@ -71,7 +90,7 @@ def escitalo():
 		count = 100
 		for c in range(0,clave):
 			for i in range(0, math.ceil(lenght/clave)):
-				print(data[i*clave+clave],end="")
+				print(data[i*clave+c],end="")
 				count -= 1
 				if count < 0:
 					break
@@ -82,6 +101,13 @@ def escitalo():
 
 		if input("--- Solucion? [y/n] (clave " + str(clave) + ") ") == "y":
 			print ("--------- La clave es: " + str(clave))
+			claveStr = str(clave)
+			for c in range(0,clave):
+				for i in range(0, math.ceil(lenght/clave)):
+					if i*clave+clave < lenght:
+						solucion += data[clave * i + c]
+						print(data[clave * i + c],end="")
+			printToFile(solucion,claveStr,"Escitalo")
 			break
 
 
@@ -92,6 +118,7 @@ def vigenere():
 	global data
 	global frequency
 	global dataFreq
+	global solucion
 
 	originalData = data
 	data = re.sub('[\W_]', '', data)
@@ -156,15 +183,18 @@ def vigenere():
 		for c in originalData:
 			if c >= 'A' and c <= 'Z':
 				print (chr((ord(datas[i][j])-clavesCesar[i]-65)%26+65),end="")
+				solucion += chr((ord(datas[i][j])-clavesCesar[i]-65)%26+65)
 				i += 1
 				if i >= longitud:
 					i = 0
 					j += 1
 			else:
 				print(c,end="")
+				solucion += c
 
 		if input("Esta bien descifrado? [y/n] ") == "y":
 			print("la clave es: " + clave)
+			printToFile(solucion,clave,"Vigenere")
 			break
 
 
