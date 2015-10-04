@@ -69,23 +69,38 @@ def GF_tables():
 
 	return exponent, logarit
 
-def GF_product_t(a,b):
+def getXnY(n):
+	return n >> 4, n & 0x0f
+
+def GF_product_t(n1,n2):
+	if n1 == 0 or n2 == 0:
+		return 0
 	exp,log=GF_tables()
+
+	x1, y1 = getXnY(n1)
+	x2, y2 = getXnY(n2)
+
+	log1 = log[x1][y1]
+	log2 = log[x2][y2]
+
+	logsol = (log1+log2)%256
+
+	x,y = getXnY(logsol)
+
+	return exp[x][y]
 	
-	loga = GF_invers(a)
-	logb = GF_invers(b)
+
+
 
 def GF_invers(a):
 	exp,log=GF_tables()
-	x = a >> 4
-	y = a & 0x0f
+	x,y = getXnY(a)
 
 	pos = log[x][y]
 
 	thing = (255 - pos) 
 
-	i = thing >> 4
-	j = thing & 0x0f
+	i,j = getXnY(thing)
 
 	return exp[i][j]
 
@@ -93,7 +108,7 @@ def GF_invers(a):
 def main():
 
 	print(hex(GF_product_p(0x57,0x83)))
-	print(bin(GF_product_p(0x57,0x83)))
+	print(hex(GF_product_t(0x57,0x83)))
 
 	print(hex(GF_invers(0x05)))
 
