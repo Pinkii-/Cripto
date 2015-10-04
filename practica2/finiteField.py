@@ -69,13 +69,20 @@ def GF_tables():
 
 	return exponent, logarit
 
+def GF_invers(a):
+	exp,log=GF_tables()
+	x = a >> 4
+	y = a & 0x0f
+
+	return log[x][y]
+
 
 def main():
 
 	print(hex(GF_product_p(0x57,0x83)))
 	print(bin(GF_product_p(0x57,0x83)))
 
-	a,b=GF_tables()
+	print(hex(GF_invers(0x05)))
 
 	# for c in GF_tables():
 	# 	for cc in c:
