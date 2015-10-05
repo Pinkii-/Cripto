@@ -1,4 +1,6 @@
 
+exponent = [[0x00 for i in range(0,16)] for j in range(0,16)]
+logarit = [[0x00 for i in range(0,16)] for j in range(0,16)]
 
 def bit(x):
 	mask = 0xff
@@ -45,6 +47,7 @@ def GF_product_p(a,b):
 	return solucion
 
 def GF_tables():
+	global exponent, logarit
 	exponent = [[0x00 for i in range(0,16)] for j in range(0,16)]
 	number = 0x01
 	mult = 0x03
@@ -67,56 +70,77 @@ def GF_tables():
 			logarit[x][y] = ij
 
 
-	return exponent, logarit
+	# return exponent, logarit
 
 def getXnY(n):
 	return n >> 4, n & 0x0f
 
 def GF_product_t(n1,n2):
+	global exponent,logarit
 	if n1 == 0 or n2 == 0:
 		return 0
-	exp,log=GF_tables()
 
 	x1, y1 = getXnY(n1)
 	x2, y2 = getXnY(n2)
 
-	log1 = log[x1][y1]
-	log2 = log[x2][y2]
+	log1 = logarit[x1][y1]
+	log2 = logarit[x2][y2]
 
 	logsol = (log1+log2)%256
 
 	x,y = getXnY(logsol)
 
-	return exp[x][y]
+	return exponent[x][y]
 	
 
+def xtime(number):
+	number = number << 1
+	if (testBit(number,8) != 0):
+		number = clearBit(number,8)
+		number = number ^ 0x1b
+	return number
+
+def GF_product_t_02(a):
+	# for x in range(1):
+	# 	a = xtime(a)
+	return xtime(a)
+
+# shift left, if b8 == 1, xor with 0x1b
 
 
 def GF_invers(a):
-	exp,log=GF_tables()
+	global exponent,logarit
 	x,y = getXnY(a)
 
-	pos = log[x][y]
+	pos = logarit[x][y]
 
 	thing = (255 - pos) 
 
 	i,j = getXnY(thing)
 
-	return exp[i][j]
+	return exponent[i][j]
+
 
 
 def main():
+	GF_tables
+	for x in range(500000):
+		# GF_product_p(0x57,0x02)
+		# GF_product_t(0x57,0x02)
+		GF_product_t_02(0x57)
+	# print(hex(GF_product_p(0x57,0x02)))
+	# print(hex(GF_product_t(0x57,0x02)))
+	# print(hex(GF_product_t_02(0x57)))
+	# print(hex(GF_product_p(0x57,0x83)))
+	# print(hex(GF_product_t(0x57,0x83)))
 
-	print(hex(GF_product_p(0x57,0x83)))
-	print(hex(GF_product_t(0x57,0x83)))
+	# print(hex(GF_invers(0x05)))
 
-	print(hex(GF_invers(0x05)))
+	# # for c in GF_tables():
+	# # 	for cc in c:
+	# # 		print (hex(cc))
 
-	# for c in GF_tables():
-	# 	for cc in c:
-	# 		print (hex(cc))
-
-	print(hex(GF_invers(GF_invers(0x03))))
+	# print(hex(GF_invers(GF_invers(0x03))))
 
 
 
