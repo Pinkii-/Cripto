@@ -1,4 +1,4 @@
-
+import time
 exponent = [[0x00 for i in range(0,16)] for j in range(0,16)]
 logarit = [[0x00 for i in range(0,16)] for j in range(0,16)]
 
@@ -31,6 +31,7 @@ def getMaxBit(number):
 def GF_mod(number, divisor):
 	maxbitDiv = getMaxBit(divisor)
 	for i in range(15,7,-1):
+		print(hex(number))
 		if testBit(number,i):
 			number = number ^ (divisor << (i-maxbitDiv))
 	return number
@@ -48,7 +49,7 @@ def GF_product_p(a,b):
 
 def GF_tables():
 	global exponent, logarit
-	exponent = [[0x00 for i in range(0,16)] for j in range(0,16)]
+	exponent = [[0x01 for i in range(0,16)] for j in range(0,16)]
 	number = 0x01
 	mult = 0x03
 	for i in range(0,16):
@@ -100,10 +101,143 @@ def xtime(number):
 		number = number ^ 0x1b
 	return number
 
-def GF_product_t_02(a):
-	# for x in range(1):
-	# 	a = xtime(a)
+# for x in range(1):
+# 	a = xtime(a)
+
+def GF_product_p_02(a):
 	return xtime(a)
+
+def GF_product_p_03(a):
+	return a ^ xtime(a)
+
+def GF_product_p_09(a):
+	original = a
+	for x in range(3):
+		a = xtime(a)
+	return original ^ a
+
+def GF_product_p_0B(a):
+	original = a
+	a8 = a
+	for x in range(3):
+		a8 = xtime(a8)
+	a2 = xtime(a)
+	return original ^ a8 ^ a2
+
+def GF_product_p_0D(a):
+	original = a
+	a8 = a
+	for x in range(3):
+		a8 = xtime(a8)
+	a4 = a
+	for x in range(2):
+		a4 = xtime(a4)
+	return original ^ a8 ^ a4
+
+def GF_product_p_0E(a):
+	a2 = xtime(a)
+	a8 = a
+	for x in range(3):
+		a8 = xtime(a8)
+	a4 = a
+	for x in range(2):
+		a4 = xtime(a4)
+	return a8 ^ a4 ^ a2
+
+
+def GF_product_t_02(a):
+	if a == 0:
+		return 0x00
+
+	x1, y1 = getXnY(a)
+
+	log1 = logarit[x1][y1]
+	log2 = 0x19 # logarit[0][2]
+
+	logsol = (log1+log2)%256
+
+	x,y = getXnY(logsol)
+
+	return exponent[x][y]
+
+
+def GF_product_t_03(a):
+	if a == 0:
+		return 0x00
+
+	x1, y1 = getXnY(a)
+
+	log1 = logarit[x1][y1]
+	log2 = 0x01 # logarit[0][3]
+
+	logsol = (log1+log2)%256
+
+	x,y = getXnY(logsol)
+
+	return exponent[x][y]
+
+def GF_product_t_09(a):
+	if a == 0:
+		return 0x00
+
+	x1, y1 = getXnY(a)
+
+	log1 = logarit[x1][y1]
+	log2 = 0xc7 # logarit[0][9]
+
+	logsol = (log1+log2)%256
+
+	x,y = getXnY(logsol)
+
+	return exponent[x][y]
+
+def GF_product_t_0B(a):
+	if a == 0:
+		return 0x00
+
+	x1, y1 = getXnY(a)
+
+	log1 = logarit[x1][y1]
+	log2 = 0x68 # logarit[0][0xB]
+
+	logsol = (log1+log2)%256
+
+	x,y = getXnY(logsol)
+
+	return exponent[x][y]
+
+def GF_product_t_0D(a):
+	if a == 0:
+		return 0x00
+
+	x1, y1 = getXnY(a)
+
+	log1 = logarit[x1][y1]
+	log2 = 0xee # logarit[0][0xD]
+
+	logsol = (log1+log2)%256
+
+	x,y = getXnY(logsol)
+
+	return exponent[x][y]
+
+def GF_product_t_0E(a):
+	if a == 0:
+		return 0x00
+
+	x1, y1 = getXnY(a)
+
+	log1 = logarit[x1][y1]
+	log2 = 0xdf # logarit[0][0xE]
+
+	logsol = (log1+log2)%256
+
+	x,y = getXnY(logsol)
+
+	return exponent[x][y]
+
+
+
 
 # shift left, if b8 == 1, xor with 0x1b
 
@@ -123,11 +257,79 @@ def GF_invers(a):
 
 
 def main():
-	GF_tables
-	for x in range(500000):
+	GF_tables()
+	# for x in range(500000):
 		# GF_product_p(0x57,0x02)
 		# GF_product_t(0x57,0x02)
-		GF_product_t_02(0x57)
+		# GF_product_t_02(0x57)
+		# GF_product_p(0x57,0x0D)
+		# GF_product_p_0D(0x57)
+
+	print(hex(GF_product_t(0xA0,0xb1)))
+
+	# print(hex(GF_mod(0xffa0,0x11b)))
+	# print(hex(logarit[0][0xE]))
+	# stime = time.time()
+	# for x in range(500000):
+	# 	GF_product_t(x%256,0x02)
+	# print ("t*0x02"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t_02(x%256)
+	# print ("t_0x02"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t(x%256,0x03)
+	# print ("t*0x03"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t_03(x%256)
+	# print ("t_0x03"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t(x%256,0x09)
+	# print ("t*0x09"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t_09(x%256)
+	# print ("t_0x09"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t(x%256,0x0B)
+	# print ("t*0x0B"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t_0B(x%256)
+	# print ("t_0x0B"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t(x%256,0x0D)
+	# print ("t*0x0D"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t_0D(x%256)
+	# print ("t_0x0D"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t(x%256,0x0E)
+	# print ("t*0x0E"+time.time()-stime)
+
+	# stime = time.time()	
+	# for x in range(500000):
+	# 	GF_product_t_0E(x%256)
+	# print ("t_0x0E"+time.time()-stime)
+
+	
 	# print(hex(GF_product_p(0x57,0x02)))
 	# print(hex(GF_product_t(0x57,0x02)))
 	# print(hex(GF_product_t_02(0x57)))
