@@ -31,7 +31,6 @@ def getMaxBit(number):
 def GF_mod(number, divisor):
 	maxbitDiv = getMaxBit(divisor)
 	for i in range(15,7,-1):
-		print(hex(number))
 		if testBit(number,i):
 			number = number ^ (divisor << (i-maxbitDiv))
 	return number
@@ -265,69 +264,140 @@ def main():
 		# GF_product_p(0x57,0x0D)
 		# GF_product_p_0D(0x57)
 
-	print(hex(GF_product_t(0xA0,0xb1)))
+	#print(hex(GF_product_t(0xA0,0xb1)))
 
 	# print(hex(GF_mod(0xffa0,0x11b)))
 	# print(hex(logarit[0][0xE]))
-	# stime = time.time()
-	# for x in range(500000):
-	# 	GF_product_t(x%256,0x02)
-	# print ("t*0x02"+time.time()-stime)
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t_02(x%256)
-	# print ("t_0x02"+time.time()-stime)
+	stime = time.time()
+	for x in range(1000000):
+		GF_product_t(x%256,0x02)
+	print ("t*0x02 -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t(x%256,0x03)
-	# print ("t*0x03"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t_02(x%256)
+	print ("t_0x02 -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t_03(x%256)
-	# print ("t_0x03"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t(x%256,0x03)
+	print ("t*0x03 -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t(x%256,0x09)
-	# print ("t*0x09"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t_03(x%256)
+	print ("t_0x03 -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t_09(x%256)
-	# print ("t_0x09"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t(x%256,0x09)
+	print ("t*0x09 -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t(x%256,0x0B)
-	# print ("t*0x0B"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t_09(x%256)
+	print ("t_0x09 -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t_0B(x%256)
-	# print ("t_0x0B"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t(x%256,0x0B)
+	print ("t*0x0B -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t(x%256,0x0D)
-	# print ("t*0x0D"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t_0B(x%256)
+	print ("t_0x0B -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t_0D(x%256)
-	# print ("t_0x0D"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t(x%256,0x0D)
+	print ("t*0x0D -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t(x%256,0x0E)
-	# print ("t*0x0E"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t_0D(x%256)
+	print ("t_0x0D -> "+str(time.time()-stime))
 
-	# stime = time.time()	
-	# for x in range(500000):
-	# 	GF_product_t_0E(x%256)
-	# print ("t_0x0E"+time.time()-stime)
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t(x%256,0x0E)
+	print ("t*0x0E -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t_0E(x%256)
+	print ("t_0x0E -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_t(x%256,x%255)
+	print ("t_0 -> "+str(time.time()-stime))
+
+	stime = time.time()
+	for x in range(1000000):
+		GF_product_t(x%256,0x02)
+	print ("t*0x02 -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p_02(x%256)
+	print ("p_0x02 -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p(x%256,0x03)
+	print ("p*0x03 -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p_03(x%256)
+	print ("p_0x03 -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p(x%256,0x09)
+	print ("p*0x09 -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p_09(x%256)
+	print ("p_0x09 -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p(x%256,0x0B)
+	print ("p*0x0B -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p_0B(x%256)
+	print ("p_0x0B -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p(x%256,0x0D)
+	print ("p*0x0D -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p_0D(x%256)
+	print ("p_0x0D -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p(x%256,0x0E)
+	print ("p*0x0E -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p_0E(x%256)
+	print ("p_0x0E -> "+str(time.time()-stime))
+
+	stime = time.time()	
+	for x in range(1000000):
+		GF_product_p(x%256,x%255)
+	print ("p_0 -> "+str(time.time()-stime))
 
 	
 	# print(hex(GF_product_p(0x57,0x02)))
