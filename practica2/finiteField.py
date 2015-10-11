@@ -240,6 +240,23 @@ def GF_product_t_0E(a):
 
 # shift left, if b8 == 1, xor with 0x1b
 
+def GF_generador():
+ 	print("Generators: ", end=" ")
+ 	for j in range (1,256):
+ 		v = [False for i in range(0,256)]
+ 		aux = j
+ 		i = 0
+ 		while (i < 254):
+ 			aux = GF_product_p(aux,j);
+ 			if not v[aux]:
+ 			 	v[aux] = True;
+ 			else:
+ 				break;
+
+ 			i += 1
+ 		if i == 254:
+ 			print(hex(j), end=", ")
+
 
 def GF_invers(a):
 	global exponent,logarit
@@ -257,6 +274,8 @@ def GF_invers(a):
 
 def main():
 	GF_tables()
+
+	#GF_generador()
 	# for x in range(500000):
 		# GF_product_p(0x57,0x02)
 		# GF_product_t(0x57,0x02)
@@ -336,8 +355,8 @@ def main():
 
 	stime = time.time()
 	for x in range(1000000):
-		GF_product_t(x%256,0x02)
-	print ("t*0x02 -> "+str(time.time()-stime))
+		GF_product_p(x%256,0x02)
+	print ("p*0x02 -> "+str(time.time()-stime))
 
 	stime = time.time()	
 	for x in range(1000000):
@@ -419,3 +438,5 @@ def main():
 
 if __name__ == '__main__':
 	main()
+
+
