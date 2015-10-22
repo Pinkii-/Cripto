@@ -212,7 +212,7 @@ class AES(object):
     # using the state value as index for the SBox
     #
     def subBytes(self, state, isInv):
-        # return state
+        return state
         if isInv: getter = self.getSBoxInvert
         else: getter = self.getSBoxValue
         for i in range(16): state[i] = getter(state[i])
@@ -669,8 +669,10 @@ def testStr(cleartext, keysize=16, modeName = "CBC"):
     
 if __name__ == "__main__":
     moo = AESModeOfOperation()
-    cleartext = "Hello World!!!!!"
-    cleartext2 ="Hello W0rld!!!!!"
+    cleartext =  "Hello World!!!!!"
+    cleartext2 = "Hello W0rld!!!!!"
+    cleartext3 = "Hello World!!1!!"
+    cleartext23 ="Hello W0rld!!1!!"
 
     key = "This_key_for_dem"
     cypherkey = [ ord(c) for c in key ]
@@ -680,7 +682,24 @@ if __name__ == "__main__":
             cypherkey, moo.aes.keySize["SIZE_128"], iv)
     mode, orig_len, ciph2 = moo.encrypt(cleartext2, moo.modeOfOperation["CBC"],
             cypherkey, moo.aes.keySize["SIZE_128"], iv)
+    mode, orig_len, ciph3 = moo.encrypt(cleartext3, moo.modeOfOperation["CBC"],
+            cypherkey, moo.aes.keySize["SIZE_128"], iv)
+    mode, orig_len, ciph23 = moo.encrypt(cleartext23, moo.modeOfOperation["CBC"],
+            cypherkey, moo.aes.keySize["SIZE_128"], iv)
 
+
+    print cleartext
+    print cleartext2
+    print cleartext3
+    print cleartext23
+    print ""
+
+    for a in range(0,4):
+        for b in range(0,4):
+            print hex(ciph[a*4+b]),
+        print ""
+
+    print ""
 
     for a in range(0,4):
         for b in range(0,4):
@@ -691,10 +710,37 @@ if __name__ == "__main__":
 
     for a in range(0,4):
         for b in range(0,4):
-            print hex(ciph[a*4+b]),
+            print hex(ciph3[a*4+b]),
         print ""
 
+    print ""
 
+    for a in range(0,4):
+        for b in range(0,4):
+            print hex(ciph23[a*4+b]),
+        print ""
+
+    print ""
+    
+
+
+    for a in range(0,4):
+        for b in range(0,4):
+            if (ciph2[a*4+b] ^ ciph3[a*4+b] ^ ciph23[a*4+b] != ciph[a*4+b]):
+                print "XXXX",
+            else:
+                print "0000",
+        print ""
+
+    
+    # print 'm=%s, ol=%s (%s), ciph=%s' % (mode, orig_len, len(cleartext), ciph)
+    # decr = moo.decrypt(ciph, orig_len, mode, cypherkey,
+    #         moo.aes.keySize["SIZE_128"], iv)
+    # print decr
+
+
+    # print ""
+    # testStr(cleartext, 16, "CBC")
     
 
 

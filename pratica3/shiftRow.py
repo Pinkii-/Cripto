@@ -220,7 +220,7 @@ class AES(object):
 
     # iterate over the 4 rows and call shiftRow() with that row
     def shiftRows(self, state, isInv):
-        #return state
+        return state
         for i in range(4):
             state = self.shiftRow(state, i*4, i, isInv)
         return state
@@ -254,7 +254,6 @@ class AES(object):
 
     # galois multiplication of 1 column of the 4x4 matrix
     def mixColumn(self, column, isInv):
-        # print "fail"
         if isInv: mult = [14, 9, 13, 11]
         else: mult = [2, 1, 1, 3]
         cpy = list(column)
@@ -681,6 +680,9 @@ if __name__ == "__main__":
     mode, orig_len, ciph2 = moo.encrypt(cleartext2, moo.modeOfOperation["CBC"],
             cypherkey, moo.aes.keySize["SIZE_128"], iv)
 
+    print cleartext
+    print cleartext2
+    print""
 
     for a in range(0,4):
         for b in range(0,4):
@@ -694,7 +696,25 @@ if __name__ == "__main__":
             print hex(ciph[a*4+b]),
         print ""
 
+    print ""
 
+    for a in range(0,4):
+        for b in range(0,4):
+            if (ciph[a*4+b] ^ ciph2[a*4+b] != 0):
+                print "XXXX",
+            else:
+                print "0000",
+        print ""
+
+    
+    # print 'm=%s, ol=%s (%s), ciph=%s' % (mode, orig_len, len(cleartext), ciph)
+    # decr = moo.decrypt(ciph, orig_len, mode, cypherkey,
+    #         moo.aes.keySize["SIZE_128"], iv)
+    # print decr
+
+
+    # print ""
+    # testStr(cleartext, 16, "CBC")
     
 
 

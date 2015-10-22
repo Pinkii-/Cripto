@@ -240,7 +240,7 @@ class AES(object):
 
     # galois multiplication of the 4x4 matrix
     def mixColumns(self, state, isInv):
-        # return state
+        return state
         # iterate over the 4 columns
         for i in range(4):
             # construct one column by slicing over the 4 rows
@@ -670,7 +670,7 @@ def testStr(cleartext, keysize=16, modeName = "CBC"):
 if __name__ == "__main__":
     moo = AESModeOfOperation()
     cleartext = "Hello World!!!!!"
-    cleartext2 ="Hello W0rld!!!!!"
+    cleartext2 ="Hallo World!!!!!"
 
     key = "This_key_for_dem"
     cypherkey = [ ord(c) for c in key ]
@@ -681,6 +681,9 @@ if __name__ == "__main__":
     mode, orig_len, ciph2 = moo.encrypt(cleartext2, moo.modeOfOperation["CBC"],
             cypherkey, moo.aes.keySize["SIZE_128"], iv)
 
+    print cleartext
+    print cleartext2
+    print""
 
     for a in range(0,4):
         for b in range(0,4):
@@ -694,7 +697,25 @@ if __name__ == "__main__":
             print hex(ciph[a*4+b]),
         print ""
 
+    print ""
 
+    for a in range(0,4):
+        for b in range(0,4):
+            if (ciph[a*4+b] != ciph2[a*4+b]):
+                print "XXXX",
+            else:
+                print "0000",
+        print ""
+
+    
+    # print 'm=%s, ol=%s (%s), ciph=%s' % (mode, orig_len, len(cleartext), ciph)
+    # decr = moo.decrypt(ciph, orig_len, mode, cypherkey,
+    #         moo.aes.keySize["SIZE_128"], iv)
+    # print decr
+
+
+    # print ""
+    # testStr(cleartext, 16, "CBC")
     
 
 
