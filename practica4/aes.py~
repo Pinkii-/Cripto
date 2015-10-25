@@ -661,47 +661,28 @@ def testStr(cleartext, keysize=16, modeName = "CBC"):
     decr = decryptData(key, cipher, mode)
     print 'Decrypted:', decr
     
-
-
-def toHex(s):
-    lst = []
-    for ch in s:
-        hv = hex(ord(ch)).replace('0x', '')
-        if len(hv) == 1:
-            hv = '0'+hv
-        lst.append(hv)
     
-    return reduce(lambda x,y:x+y, lst)
-
-
-
-
 if __name__ == "__main__":
     moo = AESModeOfOperation()
-    cleartext = open("2015_10_01_18_57_40_gonzalo.diez.enc",'r').read()
+    cleartext = open("c1.enc",'r').read()
 
 
-    key = open("2015_10_01_18_57_40_gonzalo.diez.key",'r').read()
+    key = open("c1.key",'r').read()
+    print len(key)
     cypherkey = [ ord(c) for c in key]
     text = [ ord(c) for c in cleartext]
     # iv = [103,35,148,239,76,213,47,118,255,222,123,176,106,134,98,92]
-    iv = [0 for a in range(0,16)]
+    iv = [0 for a in range(0,24)]
     # mode, orig_len, ciph = moo.encrypt(cleartext, moo.modeOfOperation["CBC"],
     #         cypherkey, moo.aes.keySize["SIZE_256"], iv)
 
     decr = moo.decrypt(text, len(cleartext), moo.modeOfOperation["CBC"], cypherkey,
-            moo.aes.keySize["SIZE_256"], iv)
+            moo.aes.keySize["SIZE_192"], iv)
 
-    last = len(decr)
+    #last = len(decr)
 
-    padding = int(toHex(decr[last-1]),16)
-
-    for i in range(padding,0, -1):
-        if int(toHex(decr[last-(i-padding)-1]),16) == padding:
-            decr = decr[:-1]
-        else:
-            print "broekn. Deberia haber un ", padding, " y hay un ", decr[last-(i-padding)-1]
-
+    #for x in decr[last-1]:
+    #    print x
 
     print decr
 
