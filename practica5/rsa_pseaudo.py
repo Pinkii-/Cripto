@@ -1,0 +1,58 @@
+# openssl rsa -pubin < gonzalo.diez_pubkeyRSA_pseudo.pem -modulus
+
+from Crypto.PublicKey import RSA
+from base64 import b64decode
+from binascii import b2a_base64
+
+def inverseModulus(a,n):
+    t = 0
+    newt = 1
+    r = n
+    newr = a
+    while newr != 0:
+        quotient = r // newr
+        (t, newt) = (newt, t - quotient * newt)
+        (r, newr) = (newr, r - quotient * newr)
+    if t < 0:
+        t += n
+    return t
+
+modulus = int("318CEC6E440432B61FE86FA3B0BEBDAB93AC1BD972C56FF3C17FC2207ED6B39F158C1B1357482AB0FD5FA33A6D3C61B4E1AFAB9E1DF5AFAC5900A260E5EC19FFDE5F6488B28B952C5608113CA41C924B470E83565991C7C6C9BC31217EDD5966640D7C24459E895CE91DBC8118BF5ED86EEB92FFAB0116280905C8D7173C2E33A28CE59C3323AFBB03D58C8764B2763AC957757CC2E437E20DAFF886E0775A5A8D72DEAD137BFA807CB8880CE67B1B4E496E01CA5F6E073DB8C6E6B9EF3A58A3176FC849385A5D36FBC0ED3FECA4E8BCA331C9BA0FD0C03F85FCDDC677268C2D16ED72B1E229176196D810DCA02C2B5658E80A7769127F002A8FFC1D873E381",16);
+
+p = 14107573518019291501**16
+q = 335050475249387074617785012489950309193**8
+
+phiP = 14107573518019291501**15 * (14107573518019291501-1)
+phiQ = 335050475249387074617785012489950309193**7 * (335050475249387074617785012489950309193-1)
+
+e = long(65537);
+
+phiN = phiP*phiQ;
+
+# e*d congruente 1 modulo phi(n)
+
+# e*d % phiN == 1;
+
+d = inverseModulus(e,phiN)
+
+dp = d%(p-1)
+dq = d%(q-1)
+u =  inverseModulus(p,q)
+
+n = p*q;
+
+key = RSA.construct((n,e,d,p,q,u));
+
+f = open('test.pem', 'w')
+
+f.write(key.exportKey('PEM'))
+
+fileToDecrypt = open('gonzalo.diez_RSA_pseudo.enc','rb').read()
+
+
+# fileToDecrypt2 = int("00544ec024c0d77155107435497bfded9b6f8f240a31cca79071b8c25a4e6899b3c7e1e91cca0affbc8a05d96fc6c8068b012204e487b2be936b01e0d5cb57bab1c87a6b8e3876c4faf03542278069973804a354ed8331b03fb7e26ef0a46b2a979d12a0a371a83e527a54b6b0e0d1ebf881294da0822a5122d98e273ca743112e015ee71e8ddb8f872753ba66808447240e0deae144a0868502d4bcf0a3d62daed0b3ef3f91fe4407100aed7c6b43e3a6175689276b802cc14c5babcaffb099bb33f8c3b14b93d44db13283aa29619de3ff84b6ec1ad3ec11a5bce638a2585fa2e229b860598c569b66e01bedf1049bdc9cda381f2933fe5e0014b7def6e67f",64);
+
+
+# print(key.decrypt(fileToDecrypt))
+
+
