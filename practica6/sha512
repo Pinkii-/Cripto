@@ -1,0 +1,20 @@
+from Crypto.Hash import SHA512
+
+key = 'ckczppom'
+
+
+i = 2230628960
+
+ndigitos = 8
+
+dni = "47254514"
+
+while True:
+    m = SHA512.new(str(i))
+    if m.hexdigest()[:ndigitos] == dni[:ndigitos]:
+        print i, m.hexdigest()[:ndigitos], dni[:ndigitos]
+        ndigitos += 1
+    else:
+        i += 1
+
+
