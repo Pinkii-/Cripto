@@ -1,20 +1,39 @@
 from Crypto.Hash import SHA512
+import sys
 
-key = 'ckczppom'
+i = 726654067
 
+i = 1000030502874
 
-i = 2230628960
+i += int(sys.argv[1])
 
-ndigitos = 8
+#256
+# 28665109 == 6
+# 579373982 == 7
+
+#512
+# 19342668 == 6
+# 412667742 == 7 in 46
+
+# 4222864395 == 8 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000fbb3cc0b
+# 1004285490707 == 8 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e9d4147613
+
+ncores = 4
+
+ndigitos = 1
 
 dni = "47254514"
-
+    
 while True:
-    m = SHA512.new(str(i))
+    k = hex(i).replace('0x','').replace('L','')
+    n = '0'*(128-len(k)) + k
+    m = SHA512.new(n)
     if m.hexdigest()[:ndigitos] == dni[:ndigitos]:
-        print i, m.hexdigest()[:ndigitos], dni[:ndigitos]
+        print i, ndigitos, dni[:ndigitos], n
         ndigitos += 1
+        if ndigitos == 9:
+            exit(0)
     else:
-        i += 1
+        i += ncores
 
 
