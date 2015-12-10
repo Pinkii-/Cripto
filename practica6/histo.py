@@ -95,7 +95,7 @@ ax2 = plt.subplot(111)
 ax2.bar(xx,nCambios, width=1)
 plt.xlabel('Numero de bits que cambian')
 plt.ylabel('Numero de veces que ha cambiado')
-plt.title(r'Numero de bits de cambian al cambiar un bit')
+plt.title(r'Numero de bits de cambian al cambiar dos bits')
 
 plt.axis([0,512, 0, max(nCambios)*1.1])
 
