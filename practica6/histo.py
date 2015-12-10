@@ -49,6 +49,7 @@ plt.title(r'Numero de bits de cambian al cambiar un bit')
 
 plt.savefig('1.png')
 
+plt.close()
 ax1 = plt.subplot(111)
 ax1.bar(xx,cPosicion, width=1)
 
@@ -59,7 +60,7 @@ plt.ylabel('Numero de veces que ha cambiado')
 plt.title(r'Numero de veces que cambia cada bit')
 
 plt.savefig('2.png')
-
+plt.close()
 nCambios = [0]*(512)
 cPosicion = [0]*(512)
 
@@ -99,6 +100,7 @@ plt.title(r'Numero de bits de cambian al cambiar un bit')
 plt.axis([0,512, 0, max(nCambios)*1.1])
 
 plt.savefig('3.png')
+plt.close()
 
 ax3 = plt.subplot(111)
 ax3.bar(xx,cPosicion, width=1)
@@ -109,3 +111,4 @@ plt.xlabel('Numero de bit')
 plt.ylabel('Numero de veces que ha cambiado')
 plt.title(r'Numero de veces que cambia cada bit')
 plt.savefig('4.png')
+
