@@ -104,7 +104,7 @@ def escitalo():
 			claveStr = str(clave)
 			for c in range(0,clave):
 				for i in range(0, math.ceil(lenght/clave)):
-					if i*clave+clave < lenght:
+					if i*clave+clave <= lenght:
 						solucion += data[clave * i + c]
 						print(data[clave * i + c],end="")
 			printToFile(solucion,claveStr,"Escitalo")
